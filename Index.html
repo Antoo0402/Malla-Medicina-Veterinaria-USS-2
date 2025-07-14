@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Malla curricular interactiva de la carrera de Medicina Veterinaria de la Universidad San Sebastián">
+  <title>Malla Curricular - Medicina Veterinaria USS</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Preconexión para mejorar rendimiento -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Favicon para identificación visual -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-content">
+      <h1>Malla Curricular de Medicina Veterinaria</h1>
+      <p class="subtitle">Universidad San Sebastián</p>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="controls">
+      <button id="reset-btn" class="btn">Reiniciar Progreso</button>
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+        <span id="progress-text">0% completado</span>
+      </div>
+    </div>
+
+    <div class="malla-container" id="malla">
+      <!-- Contenido generado dinámicamente por script.js -->
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="current-year"></span> Universidad San Sebastián - Todos los derechos reservados</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Script pequeño para el año actual
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
