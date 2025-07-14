@@ -1,14 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malla Medicina Veterinaria USS</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Curricular Medicina Veterinaria USS</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Malla Medicina Veterinaria USS</h1>
-  <div class="malla" id="malla"></div>
-  <script src="script.js"></script>
+    <h1>Malla Curricular Medicina Veterinaria USS</h1>
+
+    <div class="container">
+        <div class="semestre" id="semestre1">
+            <h2>1 Semestre</h2>
+            <div class="ramo" id="biologia-celular" data-abre="bioquimica-general,anatomia-veterinaria-1,histologia-veterinaria,genetica-ganadera,memoria-de-titulo">Biología Celular</div>
+            <div class="ramo" id="quimica-general-y-organica" data-abre="bioquimica-general,memoria-de-titulo">Química General y Orgánica</div>
+            <div class="ramo" id="fisica-medica" data-abre="metodos-complementarios-de-diagnostico,memoria-de-titulo">Física Médica</div>
+            <div class="ramo" id="matematicas" data-abre="genetica-ganadera,economia,memoria-de-titulo">Matemáticas</div>
+            <div class="ramo" id="orientacion-profesional" data-abre="bienestar-animal,memoria-de-titulo">Orientación Profesional</div>
+            <div class="ramo" id="estrategia-para-el-aprendizaje" data-abre="memoria-de-titulo">Estrategia para el Aprendizaje</div>
+        </div>
+
+        <div class="semestre" id="semestre2">
+            <h2>2 Semestre</h2>
+            <div class="ramo" id="bioquimica-general" data-requisito="biologia-celular,quimica-general-y-organica" data-abre="fisiologia-animal,microbiologia-general,memoria-de-titulo">Bioquímica General</div>
+            <div class="ramo" id="anatomia-veterinaria-1" data-requisito="biologia-celular" data-abre="anatomia-veterinaria-2,memoria-de-titulo">Anatomía Veterinaria 1</div>
+            <div class="ramo" id="histologia-veterinaria" data-requisito="biologia-celular" data-abre="fisiologia-animal,inmunologia-veterinaria,memoria-de-titulo">Histología Veterinaria</div>
+            <div class="ramo" id="zoologia-veterinaria" data-abre="ecologia,enfermedades-parasitarias,memoria-de-titulo">Zoología Veterinaria</div>
+            <div class="ramo" id="bienestar-animal" data-requisito="orientacion-profesional" data-abre="fisiologia-animal,inmunologia,sistema-de-produccion-de-carne,memoria-de-titulo">Bienestar Animal</div>
+            <div class="ramo" id="ingles-instrumental-1" data-abre="ingles-instrumental-2,memoria-de-titulo">Inglés Instrumental 1</div>
+        </div>
+
+        <div class="semestre" id="semestre3">
+            <h2>3 Semestre</h2>
+            <div class="ramo" id="antropologia" data-abre="etica,memoria-de-titulo">Antropología</div>
+            <div class="ramo" id="ecologia" data-requisito="zoologia-veterinaria" data-abre="produccion-de-forraje,conservacion-de-la-vida-silvestre,memoria-de-titulo">Ecología</div>
+            <div class="ramo" id="fisiologia-animal" data-requisito="bioquimica-general,histologia-veterinaria,bienestar-animal" data-abre="fisiopatologia-animal,reproduccion-animal,enfermedades-infecciosas,patologia-general,memoria-de-titulo">Fisiología Animal</div>
+            <div class="ramo" id="anatomia-veterinaria-2" data-requisito="anatomia-veterinaria-1" data-abre="memoria-de-titulo">Anatomía Veterinaria 2</div>
+            <div class="ramo" id="microbiologia-general" data-requisito="bioquimica-general" data-abre="enfermedades-infecciosas,memoria-de-titulo">Microbiología General</div>
+            <div class="ramo" id="inmunologia" data-requisito="histologia-veterinaria,bienestar-animal" data-abre="fisiopatologia-animal,enfermedades-infecciosas,memoria-de-titulo">Inmunología</div>
+            <div class="ramo" id="genetica-ganadera" data-requisito="biologia-celular,matematicas" data-abre="sistema-de-produccion-de-carne,sistema-de-produccion-de-leche,memoria-de-titulo">Genética Ganadera</div>
+            <div class="ramo" id="ingles-instrumental-2" data-requisito="ingles-instrumental-1" data-abre="memoria-de-titulo">Inglés Instrumental 2</div>
+        </div>
+
+        <div class="semestre" id="semestre4">
+            <h2>4 Semestre</h2>
+            <div class="ramo" id="etica" data-requisito="antropologia" data-abre="electivo-fils,memoria-de-titulo">Ética</div>
+            <div class="ramo" id="produccion-de-forraje" data-requisito="ecologia" data-abre="nutricion-y-alimentacion-animal,economia,memoria-de-titulo">Producción de Forraje</div>
+            <div class="ramo" id="fisiopatologia-animal" data-requisito="fisiologia-animal,inmunologia" data-abre="farmacologia-veterinaria-1,andrologia,memoria-de-titulo">Fisiopatología Animal</div>
+            <div class="ramo" id="reproduccion-animal" data-requisito="fisiologia-animal" data-abre="andrologia,sistema-de-produccion-de-carne,sistema-de-produccion-de-leche,sistema-de-produccion-de-peces,memoria-de-titulo">Reproducción Animal</div>
+            <div class="ramo" id="enfermedades-parasitarias" data-requisito="zoologia-veterinaria" data-abre="farmacologia-veterinaria-2,memoria-de-titulo">Enfermedades Parasitarias</div>
+            <div class="ramo" id="enfermedades-infecciosas" data-requisito="fisiologia-animal,microbiologia-general,inmunologia" data-abre="farmacologia-veterinaria-1,epidemiologia-y-salud-publica,memoria-de-titulo">Enfermedades Infecciosas</div>
+            <div class="ramo" id="patologia-general" data-requisito="fisiologia-animal" data-abre="patologia-especial-de-sistemas,memoria-de-titulo">Patología General</div>
+        </div>
+
+        <div class="semestre" id="semestre5">
+            <h2>5 Semestre</h2>
+            <div class="ramo" id="electivo-fils" data-requisito="etica" data-abre="memoria-de-titulo">Electivo FILS</div>
+            <div class="ramo" id="nutricion-y-alimentacion-animal" data-requisito="produccion-de-forraje" data-abre="sistema-de-produccion-de-leche,sistema-de-produccion-de-peces,memoria-de-titulo">Nutrición y Alimentación Animal</div>
+            <div class="ramo" id="patologia-especial-de-sistemas" data-requisito="patologia-general" data-abre="cirugia-general,exploracion-clinica-de-los-animales,memoria-de-titulo">Patología Especial de Sistemas</div>
+            <div class="ramo" id="farmacologia-veterinaria-1" data-requisito="fisiopatologia-animal,enfermedades-infecciosas" data-abre="farmacologia-veterinaria-2,memoria-de-titulo">Farmacología Veterinaria 1</div>
+            <div class="ramo" id="andrologia" data-requisito="fisiopatologia-animal,reproduccion-animal" data-abre="ginecologia-y-obstetricia,memoria-de-titulo">Andrología</div>
+            <div class="ramo" id="sistema-de-produccion-de-carne" data-requisito="bienestar-animal,genetica-ganadera,reproduccion-animal" data-abre="tecnologia-de-la-carne,memoria-de-titulo">Sistema de Producción de Carne</div>
+            <div class="ramo" id="economia" data-requisito="matematicas,produccion-de-forraje" data-abre="contabilidad-y-administracion,memoria-de-titulo">Economía</div>
+        </div>
+
+        <div class="semestre" id="semestre6">
+            <h2>6 Semestre</h2>
+            <div class="ramo" id="cirugia-general" data-requisito="patologia-especial-de-sistemas" data-abre="cirugia-especial,memoria-de-titulo">Cirugía General</div>
+            <div class="ramo" id="farmacologia-veterinaria-2" data-requisito="enfermedades-parasitarias,farmacologia-veterinaria-1" data-abre="cirugia-especial,toxicologia-veterinaria,memoria-de-titulo">Farmacología Veterinaria 2</div>
+            <div class="ramo" id="sistema-de-produccion-de-leche" data-requisito="genetica-ganadera,reproduccion-animal,nutricion-y-alimentacion-animal" data-abre="tecnologia-de-la-leche,memoria-de-titulo">Sistema de Producción de Leche</div>
+            <div class="ramo" id="tecnologia-de-la-carne" data-requisito="sistema-de-produccion-de-carne" data-abre="tecnologia-de-la-leche,memoria-de-titulo">Tecnología de la Carne</div>
+            <div class="ramo" id="ginecologia-y-obstetricia" data-requisito="andrologia" data-abre="exploracion-clinica-de-los-animales,memoria-de-titulo">Ginecología y Obstetricia</div>
+            <div class="ramo" id="contabilidad-y-administracion" data-requisito="economia" data-abre="analisis-estadisticos,formulacion-y-evaluacion-de-proyectos,memoria-de-titulo">Contabilidad y Administración</div>
+        </div>
+
+        <div class="semestre" id="semestre7">
+            <h2>7 Semestre</h2>
+            <div class="ramo" id="cirugia-especial" data-requisito="cirugia-general,farmacologia-veterinaria-2" data-abre="medicina-interna,memoria-de-titulo">Cirugía Especial</div>
+            <div class="ramo" id="exploracion-clinica" data-requisito="patologia-especial-de-sistemas,ginecologia-y-obstetricia" data-abre="metodos-complementarios-de-diagnostico,medicina-interna,memoria-de-titulo">Exploración Clínica</div>
+            <div class="ramo" id="analisis-estadistico" data-requisito="contabilidad-y-administracion" data-abre="metodologia-de-la-investigacion-cientifica,epidemiologia-y-salud-publica,memoria-de-titulo">Análisis Estadístico</div>
+            <div class="ramo" id="sistema-de-produccion-de-peces" data-requisito="reproduccion-animal,nutricion-y-alimentacion-animal" data-abre="memoria-de-titulo">Sistema de Producción de Peces</div>
+            <div class="ramo" id="tecnologia-de-la-leche" data-requisito="sistema-de-produccion-de-leche,tecnologia-de-la-carne" data-abre="inocuidad-de-los-alimentos,memoria-de-titulo">Tecnología de la Leche</div>
+            <div class="ramo" id="conservacion-de-la-vida-silvestre" data-requisito="ecologia" data-abre="clinica-de-animales-silvestres-y-exoticos,memoria-de-titulo">Conservación de la Vida Silvestre</div>
+        </div>
+
+        <div class="semestre" id="semestre8">
+            <h2>8 Semestre</h2>
+            <div class="ramo" id="toxicologia-veterinaria" data-requisito="farmacologia-veterinaria-2" data-abre="clinica-de-animales-silvestres-y-exoticos,clinica-de-equinos-y-rumiantes,clinica-de-animales-de-compania,inocuidad-de-los-alimentos,memoria-de-titulo">Toxicología Veterinaria</div>
+            <div class="ramo" id="metodos-complementarios-de-diagnostico" data-requisito="fisica-medica,exploracion-clinica" data-abre="clinica-de-animales-silvestres-y-exoticos,clinica-de-equinos-y-rumiantes,clinica-de-animales-de-compania,memoria-de-titulo">Métodos Complementarios de Diagnóstico</div>
+            <div class="ramo" id="medicina-interna" data-requisito="cirugia-especial,exploracion-clinica" data-abre="clinica-de-animales-silvestres-y-exoticos,clinica-de-equinos-y-rumiantes,clinica-de-animales-de-compania,memoria-de-titulo">Medicina Interna</div>
+            <div class="ramo" id="metodologia-de-la-investigacion-cientifica" data-requisito="analisis-estadistico" data-abre="memoria-de-titulo">Metodología de la Investigación Científica</div>
+            <div class="ramo" id="epidemiologia-y-salud-publica" data-requisito="enfermedades-infecciosas,analisis-estadistico" data-abre="legislacion-y-deontologia,inocuidad-de-los-alimentos,memoria-de-titulo">Epidemiología y Salud Pública</div>
+            <div class="ramo" id="formulacion-y-evaluacion-de-proyectos" data-requisito="contabilidad-y-administracion" data-abre="memoria-de-titulo">Formulación y Evaluación de Proyectos</div>
+        </div>
+
+        <div class="semestre" id="semestre9">
+            <h2>9 Semestre</h2>
+            <div class="ramo" id="clinica-de-animales-silvestres-y-exoticos" data-requisito="conservacion-de-la-vida-silvestre,toxicologia-veterinaria,metodos-complementarios-de-diagnostico,medicina-interna" data-abre="electivo-1,electivo-2,electivo-3,internado">Clínica de Animales Silvestres y Exóticos</div>
+            <div class="ramo" id="clinica-de-equinos-y-rumiantes" data-requisito="toxicologia-veterinaria,metodos-complementarios-de-diagnostico,medicina-interna" data-abre="electivo-1,electivo-2,electivo-3,internado">Clínica de Equinos y Rumiantes</div>
+            <div class="ramo" id="clinica-de-animales-de-compania" data-requisito="toxicologia-veterinaria,metodos-complementarios-de-diagnostico,medicina-interna" data-abre="electivo-1,electivo-2,electivo-3,internado">Clínica de Animales de Compañía</div>
+            <div class="ramo" id="legislacion-y-deontologia" data-requisito="epidemiologia-y-salud-publica" data-abre="electivo-1,electivo-2,electivo-3,internado">Legislación y Deontología</div>
+            <div class="ramo" id="inocuidad-de-los-alimentos" data-requisito="tecnologia-de-la-leche,toxicologia-veterinaria,epidemiologia-y-salud-publica" data-abre="electivo-1,electivo-2,electivo-3,internado">Inocuidad de los Alimentos</div>
+            <div class="ramo" id="memoria-de-titulo" data-requisito="biologia-celular,quimica-general-y-organica,fisica-medica,matematicas,orientacion-profesional,estrategia-para-el-aprendizaje,bioquimica-general,anatomia-veterinaria-1,histologia-veterinaria,zoologia-veterinaria,bienestar-animal,ingles-instrumental-1,antropologia,ecologia,fisiologia-animal,anatomia-veterinaria-2,microbiologia-general,inmunologia,genetica-ganadera,ingles-instrumental-2,etica,produccion-de-forraje,fisiopatologia-animal,reproduccion-animal,enfermedades-parasitarias,enfermedades-infecciosas,patologia-general,electivo-fils,nutricion-y-alimentacion-animal,patologia-especial-de-sistemas,farmacologia-veterinaria-1,andrologia,sistema-de-produccion-de-carne,economia,cirugia-general,farmacologia-veterinaria-2,sistema-de-produccion-de-leche,tecnologia-de-la-carne,ginecologia-y-obstetricia,contabilidad-y-administracion,cirugia-especial,exploracion-clinica,analisis-estadistico,sistema-de-produccion-de-peces,tecnologia-de-la-leche,conservacion-de-la-vida-silvestre,toxicologia-veterinaria,metodos-complementarios-de-diagnostico,medicina-interna,metodologia-de-la-investigacion-cientifica,epidemiologia-y-salud-publica,formulacion-y-evaluacion-de-proyectos">Memoria de Título</div>
+        </div>
+
+        <div class="semestre" id="semestre10">
+            <h2>10 Semestre</h2>
+            <div class="ramo" id="electivo-1" data-requisito="clinica-de-animales-silvestres-y-exoticos,clinica-de-equinos-y-rumiantes,clinica-de-animales-de-compania,legislacion-y-deontologia,inocuidad-de-los-alimentos">Electivo 1</div>
+            <div class="ramo" id="electivo-2" data-requisito="clinica-de-animales-silvestres-y-exoticos,clinica-de-equinos-y-rumiantes,clinica-de-animales-de-compania,legislacion-y-deontologia,inocuidad-de-los-alimentos">Electivo 2</div>
+            <div class="ramo" id="electivo-3" data-requisito="clinica-de-animales-silvestres-y-exoticos,clinica-de-equinos-y-rumiantes,clinica-de-animales-de-compania,legislacion-y-deontologia,inocuidad-de-los-alimentos">Electivo 3</div>
+            <div class="ramo" id="internado" data-requisito="clinica-de-animales-silvestres-y-exoticos,clinica-de-equinos-y-rumiantes,clinica-de-animales-de-compania,legislacion-y-deontologia,inocuidad-de-los-alimentos">Internado</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
