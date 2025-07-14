@@ -268,27 +268,17 @@
 
     // Inicialización
     document.addEventListener('DOMContentLoaded', function() {
-      console.log("Iniciando aplicación...");
-      console.log("Total de semestres:", mallaCompleta.length);
-      console.log("Total de cursos:", state.totalCursos);
       renderMalla();
     });
 
     // Renderizar toda la malla
     function renderMalla() {
       const container = document.getElementById('malla');
-      
-      if (!container) {
-        console.error("No se encontró el elemento con ID 'malla'");
-        return;
-      }
+      if (!container) return;
       
       container.innerHTML = '';
-      
-      // Primero recolectamos todos los cursos aprobados
       const cursosAprobados = new Set(Object.keys(state.aprobadas));
       
-      // Renderizar cada semestre
       mallaCompleta.forEach(semestre => {
         const semestreElement = document.createElement('div');
         semestreElement.className = 'semestre';
@@ -297,14 +287,12 @@
         titulo.textContent = semestre.semestre;
         semestreElement.appendChild(titulo);
         
-        // Renderizar cada curso
         semestre.cursos.forEach(curso => {
           const cursoElement = document.createElement('div');
           cursoElement.className = 'curso';
           cursoElement.textContent = curso.nombre;
           cursoElement.dataset.nombre = curso.nombre;
           
-          // Mostrar qué materias abre
           if (curso.abre && curso.abre.length > 0) {
             const abreElement = document.createElement('div');
             abreElement.className = 'abre';
@@ -312,14 +300,12 @@
             cursoElement.appendChild(abreElement);
           }
           
-          // Verificar estado
           if (state.aprobadas[curso.nombre]) {
             cursoElement.classList.add('aprobado');
           } else if (!estaDisponible(curso, cursosAprobados)) {
             cursoElement.classList.add('bloqueado');
           }
           
-          // Evento de clic
           cursoElement.addEventListener('click', function() {
             if (!this.classList.contains('bloqueado')) {
               toggleAprobado(this);
@@ -331,24 +317,27 @@
         
         container.appendChild(semestreElement);
       });
-      
-      console.log("Malla renderizada correctamente");
     }
 
-    // Verificar si una materia está disponible (modificada)
+    // Función modificada con validación especial para Inmunología
     function estaDisponible(curso, cursosAprobados) {
       // Caso especial para Memoria de título
       if (curso.requiereTodo) {
-        const totalRequerido = state.totalCursos - 4; // Excluyendo los 4 últimos
+        const totalRequerido = state.totalCursos - 4;
         return cursosAprobados.size >= totalRequerido;
       }
-      
-      // Verificar si es un curso del primer semestre (siempre disponibles)
-      const esPrimerSemestre = mallaCompleta[0].cursos.some(c => c.nombre === curso.nombre);
-      if (esPrimerSemestre) {
-        return true;
+
+      // Validación especial para Inmunología (requiere Histología Veterinaria y Bienestar Animal)
+      if (curso.nombre === "Immunología") {
+        const tieneHistologia = cursosAprobados.has("Histología Veterinaria");
+        const tieneBienestar = cursosAprobados.has("Bienestar animal");
+        return tieneHistologia && tieneBienestar;
       }
-      
+
+      // Cursos del primer semestre siempre disponibles
+      const esPrimerSemestre = mallaCompleta[0].cursos.some(c => c.nombre === curso.nombre);
+      if (esPrimerSemestre) return true;
+
       // Verificar requisitos normales
       const requisitos = [];
       mallaCompleta.forEach(sem => {
@@ -358,32 +347,15 @@
           }
         });
       });
-      
-      // Si no tiene requisitos, está disponible
-      if (requisitos.length === 0) {
-        return true;
-      }
-      
-      // Verificar que TODOS los requisitos estén aprobados
-      return requisitos.every(req => cursosAprobados.has(req));
+
+      return requisitos.length === 0 || requisitos.every(req => cursosAprobados.has(req));
     }
 
     // Alternar estado de aprobado
     function toggleAprobado(elemento) {
       const nombre = elemento.dataset.nombre;
-      
-      if (state.aprobadas[nombre]) {
-        delete state.aprobadas[nombre];
-        elemento.classList.remove('aprobado');
-      } else {
-        state.aprobadas[nombre] = true;
-        elemento.classList.add('aprobado');
-      }
-      
-      // Guardar en localStorage
+      state.aprobadas[nombre] = !state.aprobadas[nombre];
       localStorage.setItem('materiasAprobadas', JSON.stringify(state.aprobadas));
-      
-      // Volver a renderizar para actualizar estados
       renderMalla();
     }
   </script>
