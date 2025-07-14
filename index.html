@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Malla Completa Veterinaria USS</title>
+  <title>Malla Curricular Veterinaria USS</title>
   <style>
     :root {
-      --primary: #D8BFD8;    /* Lila pastel */
-      --secondary: #E6E6FA;  /* Lavanda */
-      --light: #F5F5FF;      /* Blanco azulado */
-      --dark: #9370DB;       /* Púrpura medio pastel */
-      --disabled: #E0E0E0;   /* Gris claro */
-      --text: #4B0082;       /* Índigo para texto */
-      --hover: #C9A0DC;      /* Wisteria pastel */
-      --background: #FFF5FF; /* Fondo rosa blanco */
+      --primary: #D8BFD8;
+      --secondary: #E6E6FA;
+      --light: #F5F5FF;
+      --dark: #9370DB;
+      --disabled: #E0E0E0;
+      --text: #4B0082;
+      --hover: #C9A0DC;
+      --background: #FFF5FF;
     }
     
     body {
@@ -111,7 +111,6 @@
       font-style: italic;
     }
     
-    /* Barra de scroll */
     .malla-container::-webkit-scrollbar {
       height: 8px;
     }
@@ -129,26 +128,22 @@
 </head>
 <body>
   <h1>Malla Curricular de Medicina Veterinaria USS</h1>
-  <div class="malla-container" id="malla">
-    <!-- Los semestres se cargarán aquí -->
-  </div>
+  <div class="malla-container" id="malla"></div>
 
   <script>
-    // Datos COMPLETOS de los 10 semestres
+    // Datos completos de la malla curricular
     const mallaCompleta = [
-      // 1er Semestre (todos disponibles inicialmente)
       {
         semestre: "1er Semestre",
         cursos: [
           { nombre: "Biología celular", abre: ["Bioquímica General", "Anatomía Veterinaria 1", "Histología veterinaria", "Genética Ganadera"] },
           { nombre: "Química General y Orgánico", abre: ["Bioquímica General"] },
-          { nombre: "Fica Médica", abre: ["Métodos de complementarios de diagnóstico"] },
+          { nombre: "Fisica Médica", abre: ["Métodos de complementarios de diagnóstico"] },
           { nombre: "Matemáticas", abre: ["Genética Ganadera", "Economía"] },
           { nombre: "Orientación profesional", abre: ["Bienestar animal"] },
           { nombre: "Estrategia para el aprendizaje", abre: [] }
         ]
       },
-      // 2do Semestre
       {
         semestre: "2do Semestre",
         cursos: [
@@ -160,7 +155,6 @@
           { nombre: "Inglés Instrumental 1", abre: ["Inglés Instrumental 2"] }
         ]
       },
-      // 3er Semestre
       {
         semestre: "3er Semestre",
         cursos: [
@@ -173,97 +167,19 @@
           { nombre: "Genética Ganadera", abre: ["Sistema de producción de carne", "Sistema de producción de leche"] },
           { nombre: "Inglés Instrumental 2", abre: [] }
         ]
-      },
-      // 4to Semestre
-      {
-        semestre: "4to Semestre",
-        cursos: [
-          { nombre: "Ética", abre: ["Electivo FILS"] },
-          { nombre: "Producción de forraje", abre: ["Nutrición y alimentación animal", "Economía"] },
-          { nombre: "Fisiopatología animal", abre: ["Farmacología Veterinaria", "Andrología"] },
-          { nombre: "Reproducción animal", abre: ["Andrología", "Sistema de producción de carne", "Sistema de producción de leche", "Sistema de producción de peces"] },
-          { nombre: "Enfermedades parasitarias", abre: ["Farmacología Veterinaria 2"] },
-          { nombre: "Enfermedades infecciosas", abre: ["Farmacología Veterinaria 1", "Epidemiología y salud publica"] },
-          { nombre: "Patología general", abre: ["Patología especial de sistemas"] }
-        ]
-      },
-      // 5to Semestre
-      {
-        semestre: "5to Semestre",
-        cursos: [
-          { nombre: "Electivo FILS", abre: [] },
-          { nombre: "Nutrición y alimentación animal", abre: ["Sistema de producción de leche", "Sistema de producción de peces"] },
-          { nombre: "Patología especial de sistemas", abre: ["Cirugía General", "Exploración clínica de los animal"] },
-          { nombre: "Farmacología Veterinaria 1", abre: ["Farmacología Veterinaria 2"] },
-          { nombre: "Andrología", abre: ["Ginecología y obstetricia"] },
-          { nombre: "Sistema de producción de carne", abre: ["Tecnología de la carne"] },
-          { nombre: "Economía", abre: ["Contabilidad y administración"] }
-        ]
-      },
-      // 6to Semestre
-      {
-        semestre: "6to Semestre",
-        cursos: [
-          { nombre: "Cirugía general", abre: ["Cirugía especial"] },
-          { nombre: "Farmacología Veterinaria 2", abre: ["Cirugía especial", "Toxicología Veterinaria"] },
-          { nombre: "Sistema de producción de leche", abre: ["Tecnología de la leche"] },
-          { nombre: "Tecnología de la carne", abre: ["Tecnología de la leche"] },
-          { nombre: "Ginecología y obstetricia", abre: ["Exploración clínica de los animales"] },
-          { nombre: "Contabilidad y administración", abre: ["Análisis estadísticos", "Formulación y evaluación de proyectos"] }
-        ]
-      },
-      // 7mo Semestre
-      {
-        semestre: "7mo Semestre",
-        cursos: [
-          { nombre: "Cirugía especial", abre: ["Medicina interna"] },
-          { nombre: "Exploración clínica", abre: ["Métodos complementarios de diagnóstico", "Medicina interna"] },
-          { nombre: "Análisis estadístico", abre: ["Metodología de la investigación científica", "Epidemiología y salud publica"] },
-          { nombre: "Sistema de peces", abre: [] },
-          { nombre: "Tecnología de la leche", abre: ["Inocuidad de los alimentos"] },
-          { nombre: "Conservación de la vida silvestre", abre: ["Clínica de animales silvestres y exóticos"] }
-        ]
-      },
-      // 8vo Semestre
-      {
-        semestre: "8vo Semestre",
-        cursos: [
-          { nombre: "Toxicología Veterinaria", abre: ["Clínica de animales silvestres y exóticos", "Clínica de equinos y rumiantes", "Clínica de animales de compañía", "Inocuidad de los alimentos"] },
-          { nombre: "Métodos complementarios de diagnóstico", abre: ["Clínica de animales silvestres y exóticos", "Clínica de equinos y rumiantes", "Clínica de animales de compañía"] },
-          { nombre: "Medicina Interna", abre: ["Clínica de animales silvestres y exóticos", "Clínica de equinos y rumiantes", "Clínica de animales de compañía"] },
-          { nombre: "Metodología de la investigación", abre: ["Memoria de título"] },
-          { nombre: "Epidemiología y salud publica", abre: ["Legislación y deontología", "Inocuidad de los alimentos"] },
-          { nombre: "Formulación y evaluación de proyectos", abre: ["Memoria de título"] }
-        ]
-      },
-      // 9no Semestre
-      {
-        semestre: "9no Semestre",
-        cursos: [
-          { nombre: "Clínica de animales silvestres y exóticos", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] },
-          { nombre: "Clínica de equinos y rumiantes", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] },
-          { nombre: "Clínica de animales de compañía", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] },
-          { nombre: "Legislación y deontología", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] },
-          { nombre: "Memoria de título", abre: [], requiereTodo: true },
-          { nombre: "Inocuidad de los alimentos", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] }
-        ]
-      },
-      // 10mo Semestre
-      {
-        semestre: "10mo Semestre",
-        cursos: [
-          { nombre: "Electivo 1", abre: [] },
-          { nombre: "Electivo 2", abre: [] },
-          { nombre: "Electivo 3", abre: [] },
-          { nombre: "Internado", abre: [] }
-        ]
       }
     ];
 
+    // Requisitos especiales adicionales
+    const requisitosEspeciales = {
+      "Immunología": ["Histología Veterinaria", "Bienestar animal"],
+      "Fisiología Animal": ["Bioquímica General"],
+      "Microbiología General": ["Bioquímica General"]
+    };
+
     // Estado de la aplicación
     const state = {
-      aprobadas: JSON.parse(localStorage.getItem('materiasAprobadas')) || {},
-      totalCursos: mallaCompleta.reduce((total, sem) => total + sem.cursos.length, 0)
+      aprobadas: JSON.parse(localStorage.getItem('materiasAprobadas')) || {}
     };
 
     // Inicialización
@@ -271,35 +187,21 @@
       renderMalla();
     });
 
-    // Función PRINCIPAL - BLOQUEO ESTRICTO IMPLEMENTADO
-    function estaDisponible(curso, cursosAprobados) {
-      // 1. Si ya está aprobado, está disponible
-      if (cursosAprobados.has(curso.nombre)) return true;
+    // Función para verificar disponibilidad con bloqueo estricto
+    function estaDisponible(curso) {
+      // 1. Cursos sin requisitos siempre disponibles
+      if (!curso.abre || curso.abre.length === 0) return true;
       
-      // 2. Cursos del primer semestre siempre disponibles
-      const esPrimerSemestre = mallaCompleta[0].cursos.some(c => c.nombre === curso.nombre);
-      if (esPrimerSemestre) return true;
-      
-      // 3. Caso especial para Memoria de título (requiere casi todo aprobado)
-      if (curso.requiereTodo) {
-        return cursosAprobados.size >= (state.totalCursos - 4);
+      // 2. Verificar requisitos especiales
+      if (requisitosEspeciales[curso.nombre]) {
+        const cumpleRequisitosEspeciales = requisitosEspeciales[curso.nombre].every(
+          req => state.aprobadas[req]
+        );
+        if (!cumpleRequisitosEspeciales) return false;
       }
       
-      // 4. Buscar TODOS los cursos que son requisitos para este curso
-      const cursosRequisitos = [];
-      mallaCompleta.forEach(semestre => {
-        semestre.cursos.forEach(c => {
-          if (c.abre && c.abre.includes(curso.nombre)) {
-            cursosRequisitos.push(c.nombre);
-          }
-        });
-      });
-      
-      // 5. Si no tiene requisitos, está disponible
-      if (cursosRequisitos.length === 0) return true;
-      
-      // 6. VERIFICACIÓN ESTRICTA: Todos los requisitos deben estar aprobados
-      return cursosRequisitos.every(req => cursosAprobados.has(req));
+      // 3. Verificar requisitos normales
+      return curso.abre.every(ramo => state.aprobadas[ramo]);
     }
 
     // Renderizar toda la malla
@@ -308,7 +210,6 @@
       if (!container) return;
       
       container.innerHTML = '';
-      const cursosAprobados = new Set(Object.keys(state.aprobadas));
       
       mallaCompleta.forEach(semestre => {
         const semestreElement = document.createElement('div');
@@ -324,7 +225,6 @@
           cursoElement.textContent = curso.nombre;
           cursoElement.dataset.nombre = curso.nombre;
           
-          // Mostrar qué materias abre
           if (curso.abre && curso.abre.length > 0) {
             const abreElement = document.createElement('div');
             abreElement.className = 'abre';
@@ -332,14 +232,12 @@
             cursoElement.appendChild(abreElement);
           }
           
-          // Verificar estado (APROBADO o BLOQUEADO)
           if (state.aprobadas[curso.nombre]) {
             cursoElement.classList.add('aprobado');
-          } else if (!estaDisponible(curso, cursosAprobados)) {
+          } else if (!estaDisponible(curso)) {
             cursoElement.classList.add('bloqueado');
           }
           
-          // Evento de clic (solo para cursos no bloqueados)
           cursoElement.addEventListener('click', function() {
             if (!this.classList.contains('bloqueado')) {
               toggleAprobado(this);
@@ -358,7 +256,7 @@
       const nombre = elemento.dataset.nombre;
       state.aprobadas[nombre] = !state.aprobadas[nombre];
       localStorage.setItem('materiasAprobadas', JSON.stringify(state.aprobadas));
-      renderMalla(); // Vuelve a renderizar para actualizar los estados
+      renderMalla();
     }
   </script>
 </body>
