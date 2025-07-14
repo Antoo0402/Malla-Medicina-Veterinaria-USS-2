@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Malla Completa - Medicina Veterinaria USS</title>
+  <title>Malla Completa Medicina Veterinaria USS</title>
   <style>
     :root {
       --primary: #6a1b9a;
       --secondary: #9c27b0;
       --light: #e1bee7;
       --dark: #4a148c;
-      --success: #4caf50;
       --disabled: #e0e0e0;
-      --text-light: #ffffff;
     }
     
     body {
@@ -20,196 +18,94 @@
       background: #f9f4ff;
       margin: 0;
       padding: 20px;
-      color: #333;
     }
     
     header {
       text-align: center;
-      margin-bottom: 30px;
-      padding: 20px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
     
     h1 {
-      margin: 0;
-      font-size: 1.8rem;
-    }
-    
-    .subtitle {
-      margin-top: 5px;
-      font-size: 1rem;
-      opacity: 0.9;
-    }
-    
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto 20px;
-      padding: 15px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      color: var(--dark);
     }
     
     .progress-container {
-      flex-grow: 1;
-      margin-left: 20px;
+      background: #eee;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 800px;
+      padding: 5px;
     }
     
     .progress-bar {
       height: 20px;
-      background: #eee;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--secondary), var(--primary));
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-    
-    #progress-text {
-      font-size: 0.9rem;
-      text-align: center;
-      margin-top: 5px;
-    }
-    
-    .btn {
-      padding: 8px 16px;
-      background: var(--primary);
-      color: white;
-      border: none;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
       border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s;
-    }
-    
-    .btn:hover {
-      background: var(--dark);
-      transform: translateY(-2px);
+      width: 0%;
+      transition: width 0.5s;
     }
     
     .malla-container {
       display: flex;
       gap: 15px;
       overflow-x: auto;
-      padding: 20px 10px;
-      max-width: 1200px;
-      margin: 0 auto;
+      padding: 10px;
     }
     
     .semestre {
-      min-width: 260px;
+      min-width: 250px;
       background: white;
       border-radius: 10px;
       padding: 15px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-      flex-shrink: 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
     .semestre h2 {
       color: var(--dark);
       text-align: center;
       margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--light);
-      font-size: 1.2rem;
     }
     
     .curso {
       background: var(--light);
-      padding: 12px;
-      margin-bottom: 10px;
-      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: all 0.3s;
-      position: relative;
-      border-left: 4px solid var(--primary);
+      transition: all 0.2s;
+      border-left: 3px solid var(--primary);
     }
     
     .curso:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
     }
     
     .curso.aprobado {
       background: var(--secondary);
-      color: var(--text-light);
-      border-left-color: var(--dark);
-    }
-    
-    .curso.aprobado::after {
-      content: "✓";
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-weight: bold;
+      color: white;
     }
     
     .curso.bloqueado {
       background: var(--disabled);
       color: #777;
       cursor: not-allowed;
-      border-left-color: #ccc;
-    }
-    
-    .curso.bloqueado::after {
-      content: "🔒";
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.9em;
     }
     
     .curso .abre {
-      font-size: 0.8rem;
+      font-size: 12px;
       margin-top: 5px;
-      opacity: 0.8;
       font-style: italic;
-    }
-    
-    @media (max-width: 768px) {
-      .controls {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .progress-container {
-        width: 100%;
-        margin-left: 0;
-      }
-      
-      .semestre {
-        min-width: 220px;
-      }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Malla Curricular de Medicina Veterinaria</h1>
-    <p class="subtitle">Universidad San Sebastián - Haz clic para marcar materias como aprobadas</p>
-  </header>
-  
-  <div class="controls">
-    <button id="reset-btn" class="btn">Reiniciar Progreso</button>
     <div class="progress-container">
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
-      <div id="progress-text">0% completado (0/0 materias)</div>
+      <div class="progress-bar" id="progress-bar"></div>
     </div>
-  </div>
+    <div id="progress-text">0% completado (0/0 materias)</div>
+  </header>
   
   <main>
     <div class="malla-container" id="malla">
@@ -218,9 +114,9 @@
   </main>
 
   <script>
-    // Datos completos de los 10 semestres
+    // Datos COMPLETOS de los 10 semestres
     const mallaData = [
-      // Primer Semestre
+      // 1er Semestre
       {
         semestre: "1er Semestre",
         cursos: [
@@ -232,7 +128,7 @@
           { nombre: "Estrategia para el aprendizaje", abre: [] }
         ]
       },
-      // Segundo Semestre
+      // 2do Semestre
       {
         semestre: "2do Semestre",
         cursos: [
@@ -244,7 +140,7 @@
           { nombre: "Inglés Instrumental 1", abre: ["Inglés Instrumental 2"] }
         ]
       },
-      // Tercer Semestre
+      // 3er Semestre
       {
         semestre: "3er Semestre",
         cursos: [
@@ -258,7 +154,7 @@
           { nombre: "Inglés Instrumental 2", abre: [] }
         ]
       },
-      // Cuarto Semestre
+      // 4to Semestre
       {
         semestre: "4to Semestre",
         cursos: [
@@ -271,7 +167,7 @@
           { nombre: "Patología general", abre: ["Patología especial de sistemas"] }
         ]
       },
-      // Quinto Semestre
+      // 5to Semestre
       {
         semestre: "5to Semestre",
         cursos: [
@@ -284,7 +180,7 @@
           { nombre: "Economía", abre: ["Contabilidad y administración"] }
         ]
       },
-      // Sexto Semestre
+      // 6to Semestre
       {
         semestre: "6to Semestre",
         cursos: [
@@ -296,7 +192,7 @@
           { nombre: "Contabilidad y administración", abre: ["Análisis estadísticos", "Formulación y evaluación de proyectos"] }
         ]
       },
-      // Séptimo Semestre
+      // 7mo Semestre
       {
         semestre: "7mo Semestre",
         cursos: [
@@ -308,7 +204,7 @@
           { nombre: "Conservación de la vida silvestre", abre: ["Clínica de animales silvestres y exóticos"] }
         ]
       },
-      // Octavo Semestre
+      // 8vo Semestre
       {
         semestre: "8vo Semestre",
         cursos: [
@@ -320,7 +216,7 @@
           { nombre: "Formulación y evaluación de proyectos", abre: ["Memoria de título"] }
         ]
       },
-      // Noveno Semestre
+      // 9no Semestre
       {
         semestre: "9no Semestre",
         cursos: [
@@ -332,7 +228,7 @@
           { nombre: "Inocuidad de los alimentos", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] }
         ]
       },
-      // Décimo Semestre
+      // 10mo Semestre
       {
         semestre: "10mo Semestre",
         cursos: [
@@ -347,26 +243,23 @@
     // Estado de la aplicación
     const state = {
       aprobadas: JSON.parse(localStorage.getItem('materiasAprobadas')) || {},
-      totalMaterias: 0,
-      cursoElements: {}
+      totalMaterias: 0
     };
 
-    // Inicializar la aplicación
+    // Inicializar
     document.addEventListener('DOMContentLoaded', function() {
       renderMalla();
-      setupEventListeners();
-      updateProgress();
     });
 
-    // Renderizar toda la malla
+    // Renderizar la malla
     function renderMalla() {
       const container = document.getElementById('malla');
       container.innerHTML = '';
-      state.cursoElements = {};
       
       // Contar materias totales
       state.totalMaterias = mallaData.reduce((total, semestre) => total + semestre.cursos.length, 0);
       
+      // Renderizar cada semestre
       mallaData.forEach(semestre => {
         const semestreElement = document.createElement('div');
         semestreElement.className = 'semestre';
@@ -375,6 +268,7 @@
         titulo.textContent = semestre.semestre;
         semestreElement.appendChild(titulo);
         
+        // Renderizar cada curso
         semestre.cursos.forEach(curso => {
           const cursoElement = document.createElement('div');
           cursoElement.className = 'curso';
@@ -390,53 +284,36 @@
           }
           
           // Verificar estado
-          updateCursoState(curso, cursoElement);
+          if (state.aprobadas[curso.nombre]) {
+            cursoElement.classList.add('aprobado');
+          } else if (!isDisponible(curso.nombre, curso.requiereTodo)) {
+            cursoElement.classList.add('bloqueado');
+          }
           
-          // Guardar referencia al elemento
-          state.cursoElements[curso.nombre] = cursoElement;
+          // Evento de clic
+          cursoElement.addEventListener('click', function() {
+            toggleAprobado(this);
+          });
           
           semestreElement.appendChild(cursoElement);
         });
         
         container.appendChild(semestreElement);
       });
+      
+      updateProgress();
     }
 
-    // Actualizar estado de un curso
-    function updateCursoState(curso, elemento) {
-      // Reiniciar clases
-      elemento.className = 'curso';
-      
-      // Verificar si está aprobado
-      if (state.aprobadas[curso.nombre]) {
-        elemento.classList.add('aprobado');
-        return;
-      }
-      
-      // Verificar requisitos especiales (como Memoria de título)
-      if (curso.requiereTodo) {
-        const todasAprobadas = checkTodasMateriasAprobadas();
-        if (!todasAprobadas) {
-          elemento.classList.add('bloqueado');
-          return;
-        }
+    // Verificar si una materia está disponible
+    function isDisponible(nombreMateria, requiereTodo) {
+      // Si requiere todo aprobado (como Memoria de título)
+      if (requiereTodo) {
+        const totalAprobadas = Object.keys(state.aprobadas).length;
+        return totalAprobadas === state.totalMaterias - 4; // Excluyendo los 4 del último semestre
       }
       
       // Verificar requisitos normales
-      const requisitos = getRequisitos(curso.nombre);
-      if (requisitos.length > 0) {
-        const requisitosCumplidos = requisitos.every(req => state.aprobadas[req]);
-        if (!requisitosCumplidos) {
-          elemento.classList.add('bloqueado');
-          return;
-        }
-      }
-    }
-
-    // Obtener requisitos para una materia
-    function getRequisitos(nombreMateria) {
       const requisitos = [];
-      
       mallaData.forEach(semestre => {
         semestre.cursos.forEach(curso => {
           if (curso.abre && curso.abre.includes(nombreMateria)) {
@@ -445,61 +322,28 @@
         });
       });
       
-      return requisitos;
+      return requisitos.length === 0 || requisitos.every(req => state.aprobadas[req]);
     }
 
-    // Verificar si todas las materias están aprobadas (para Memoria de título)
-    function checkTodasMateriasAprobadas() {
-      // Contar todas las materias excepto las del último semestre
-      let total = 0;
-      let aprobadas = 0;
-      
-      for (let i = 0; i < mallaData.length - 1; i++) {
-        const semestre = mallaData[i];
-        total += semestre.cursos.length;
-        
-        semestre.cursos.forEach(curso => {
-          if (state.aprobadas[curso.nombre]) {
-            aprobadas++;
-          }
-        });
-      }
-      
-      return aprobadas === total;
-    }
-
-    // Manejar clic en un curso
-    function handleCursoClick(event) {
-      const elemento = event.currentTarget;
-      const nombre = elemento.dataset.nombre;
-      
+    // Alternar estado de aprobado
+    function toggleAprobado(elemento) {
       if (elemento.classList.contains('bloqueado')) return;
       
-      // Alternar estado
+      const nombre = elemento.dataset.nombre;
+      
       if (state.aprobadas[nombre]) {
         delete state.aprobadas[nombre];
+        elemento.classList.remove('aprobado');
       } else {
         state.aprobadas[nombre] = true;
+        elemento.classList.add('aprobado');
       }
       
       // Guardar en localStorage
       localStorage.setItem('materiasAprobadas', JSON.stringify(state.aprobadas));
       
       // Actualizar toda la malla
-      updateAllCursosState();
-      updateProgress();
-    }
-
-    // Actualizar estado de todos los cursos
-    function updateAllCursosState() {
-      mallaData.forEach(semestre => {
-        semestre.cursos.forEach(curso => {
-          const elemento = state.cursoElements[curso.nombre];
-          if (elemento) {
-            updateCursoState(curso, elemento);
-          }
-        });
-      });
+      renderMalla();
     }
 
     // Actualizar barra de progreso
@@ -507,29 +351,9 @@
       const aprobadas = Object.keys(state.aprobadas).length;
       const porcentaje = Math.round((aprobadas / state.totalMaterias) * 100);
       
-      document.getElementById('progress-fill').style.width = `${porcentaje}%`;
+      document.getElementById('progress-bar').style.width = `${porcentaje}%`;
       document.getElementById('progress-text').textContent = 
         `${porcentaje}% completado (${aprobadas}/${state.totalMaterias} materias)`;
-    }
-
-    // Configurar event listeners
-    function setupEventListeners() {
-      // Clic en cursos
-      document.getElementById('malla').addEventListener('click', function(event) {
-        if (event.target.classList.contains('curso')) {
-          handleCursoClick(event);
-        }
-      });
-      
-      // Botón de reinicio
-      document.getElementById('reset-btn').addEventListener('click', function() {
-        if (confirm('¿Estás seguro de querer reiniciar todo el progreso?')) {
-          state.aprobadas = {};
-          localStorage.removeItem('materiasAprobadas');
-          updateAllCursosState();
-          updateProgress();
-        }
-      });
     }
   </script>
 </body>
