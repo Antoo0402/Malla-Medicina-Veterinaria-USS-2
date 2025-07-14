@@ -1,136 +1,30 @@
-:root {/* Colores principales */
-  --primary-dark: #4a148c;
-  --primary: #6a1b9a;
-  --primary-light: #9c27b0;
-  --primary-extra-light: #e1bee7;
-  --primary-ultra-light: #f5eaff;
-  
-  /* Colores de estado */
-  --approved: #ab47bc;
-  --locked: #e0e0e0;
-  /* Texto */
-  --text-dark: #2c003e;
-  --text-light: #ffffff;
-  --text-disabled: #888888;
-  
-  /* Bordes */
-  --border-radius: 10px;
-  --border-width: 2px;}
-
-/* Reset y estilos base *
-body {font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: var(--primary-ultra-light);
-  color: var(--text-dark);
-  margin: 0;
-  padding: 20px;
-  line-height: 1.6;}
-
-h1 {text-align: center;
-  color: var(--primary);
-  margin-bottom: 1.5rem;
-  font-size: 2rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);}
-/* Contenedor principal */
-.malla {display: flex;
-  gap: 15px;
-  overflow-x: auto;
-  padding: 15px 10px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-light) var(--primary-ultra-light);}
-
-/* Estilos para la barra de scroll */.malla::-webkit-scrollbar 
-{height: 8px;}
-
-.malla::-webkit-scrollbar-track {background: var(--primary-ultra-light);
-  border-radius: 10px;}
-
-.malla::-webkit-scrollbar-thumb {background-color: var(--primary-light);
-  border-radius: 10px;}
-
-/* Estilos para cada semestre */
-.semestre {min-width: 240px;
-  background-color: var(--primary-extra-light);
-  padding: 15px;
-  border-radius: var(--border-radius);
-  flex: 0 0 auto;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);}
-
-.semestre h2 {text-align: center;
-  color: var(--primary-dark);
-  margin-bottom: 1rem;
-  font-size: 1.3rem;
-  position: relative;
-  padding-bottom: 8px;}
-
-.semestre h2::after {content: '';
-  position: absolute;
-  bottom: 0;
-  left: 25%;
-  width: 50%;
-  height: 3px;
-  background-color: var(--primary-light);
-  border-radius: 3px;}
-
-/* Estilos para los cursos */
-.curso {background-color: var(--primary-extra-light);
-  border: var(--border-width) solid var(--primary-dark);
-  border-radius: calc(var(--border-radius) - 2px);
-  padding: 12px;
-  margin: 8px 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;}
-
-.curso:hover {background-color: var(--primary-light);
-  color: var(--text-light);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);}
-
-/* Estado: Aprobado */
-.curso.aprobado {background-color: var(--approved);
-  color: var(--text-light);
-  border-color: var(--primary);
-  cursor: default;
-  box-shadow: none;
-  transform: none;}
-
-.curso.aprobado::after {content: '✓';
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-weight: bold;}
-
-/* Estado: Bloqueado */
-.curso.bloqueado {background-color: var(--locked);
-  color: var(--text-disabled);
-  border-color: #ccc;
-  cursor: not-allowed;}
-
-.curso.bloqueado::before {content: '🔒';
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.8em;}
-
-/* Responsive Design */
-@media (max-width: 768px) {body {padding: 15px 10px;}
-  h1 {font-size: 1.5rem;}
-  
-  .semestre {min-width: 200px;
-    padding: 10px;}
-  
-  .curso {padding: 10px 8px;
-    font-size: 0.9rem;}
+body {
+  font-family: Arial, sans-serif;
+  background: #f5eaff;
+  color: #2c003e;
+  margin: 0; padding: 20px;
 }
-
-@media (max-width: 480px) {
-  .semestre {
-    min-width: 180px;
-  }
-  
-  .semestre h2 {
-    font-size: 1.1rem;
-  }
+h1 { text-align:center; color:#6a1b9a; }
+.malla {
+  display:flex; gap:10px; overflow-x:auto; padding:10px;
+}
+.semestre {
+  min-width:220px; background:#e1bee7; padding:10px;
+  border-radius:10px; flex:0 0 auto;
+}
+.semestre h2 { text-align:center; color:#4a148c; }
+.curso {
+  background:#ce93d8; border:2px solid #4a148c;
+  border-radius:8px; padding:10px; margin:5px 0;
+  cursor:pointer; transition:background-color .3s ease;
+}
+.curso:hover { background:#ba68c8; }
+.curso.aprobado {
+  background:#ab47bc; color:white;
+  text-decoration:line-through; cursor:default;
+  border-color:#6a1b9a;
+}
+.curso.bloqueado {
+  background:#e0e0e0; color:#888;
+  border-color:#ccc; cursor:not-allowed;
 }
