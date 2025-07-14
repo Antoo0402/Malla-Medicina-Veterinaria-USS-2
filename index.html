@@ -33,9 +33,9 @@
     
     .malla-container {
       display: flex;
-      gap: 15px;
+      gap: 20px;
       overflow-x: auto;
-      padding: 15px 10px;
+      padding: 20px 10px;
       background-color: rgba(255, 255, 255, 0.7);
       border-radius: 12px;
       margin: 0 auto;
@@ -46,18 +46,17 @@
       min-width: 280px;
       background: white;
       border-radius: 12px;
-      padding: 18px;
+      padding: 20px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-      border: 1px solid rgba(0,0,0,0.05);
+      flex-shrink: 0;
     }
     
     .semestre h2 {
       color: var(--dark);
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       padding-bottom: 8px;
       border-bottom: 2px dashed var(--primary);
-      font-size: 1.1em;
     }
     
     .curso {
@@ -68,7 +67,6 @@
       cursor: pointer;
       transition: all 0.25s ease;
       border-left: 4px solid var(--primary);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       position: relative;
     }
     
@@ -88,8 +86,6 @@
       content: "✓";
       position: absolute;
       right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
       color: var(--dark);
       font-weight: bold;
     }
@@ -105,18 +101,14 @@
       content: "🔒";
       position: absolute;
       right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
       font-size: 0.9em;
-      opacity: 0.7;
     }
     
     .abre {
-      font-size: 0.78em;
+      font-size: 0.8em;
       margin-top: 6px;
       color: #666;
       font-style: italic;
-      line-height: 1.4;
     }
     
     /* Barra de scroll */
@@ -133,17 +125,6 @@
       background: var(--primary);
       border-radius: 10px;
     }
-    
-    @media (max-width: 768px) {
-      .semestre {
-        min-width: 240px;
-        padding: 15px;
-      }
-      
-      .curso {
-        padding: 10px 12px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -153,7 +134,7 @@
   </div>
 
   <script>
-    // Datos COMPLETOS de los 10 semestres (asegúrate de que todos los cursos estén incluidos)
+    // Datos COMPLETOS de los 10 semestres
     const mallaCompleta = [
       // 1er Semestre
       {
@@ -280,29 +261,33 @@
     ];
 
     // Estado de la aplicación
-    let materiasAprobadas = JSON.parse(localStorage.getItem('materiasAprobadas')) || {};
+    const state = {
+      aprobadas: JSON.parse(localStorage.getItem('materiasAprobadas')) || {},
+      totalCursos: mallaCompleta.reduce((total, sem) => total + sem.cursos.length, 0)
+    };
 
-    // Inicializar
+    // Inicialización
     document.addEventListener('DOMContentLoaded', function() {
-      renderizarMalla();
+      console.log("Iniciando aplicación...");
+      console.log("Total de semestres:", mallaCompleta.length);
+      console.log("Total de cursos:", state.totalCursos);
+      renderMalla();
     });
 
     // Renderizar toda la malla
-    function renderizarMalla() {
+    function renderMalla() {
       const container = document.getElementById('malla');
-      container.innerHTML = '';
       
-      // Verificar que mallaCompleta tenga datos
-      if (!mallaCompleta || mallaCompleta.length === 0) {
-        container.innerHTML = '<p>Error: No se encontraron datos de la malla curricular</p>';
+      // Verificación básica
+      if (!container) {
+        console.error("No se encontró el elemento con ID 'malla'");
         return;
       }
       
+      container.innerHTML = '';
+      
       // Renderizar cada semestre
       mallaCompleta.forEach(semestre => {
-        // Verificar que el semestre tenga cursos
-        if (!semestre.cursos || semestre.cursos.length === 0) return;
-        
         const semestreElement = document.createElement('div');
         semestreElement.className = 'semestre';
         
@@ -326,7 +311,7 @@
           }
           
           // Verificar estado
-          if (materiasAprobadas[curso.nombre]) {
+          if (state.aprobadas[curso.nombre]) {
             cursoElement.classList.add('aprobado');
           } else if (!estaDisponible(curso)) {
             cursoElement.classList.add('bloqueado');
@@ -344,48 +329,48 @@
         
         container.appendChild(semestreElement);
       });
+      
+      console.log("Malla renderizada correctamente");
     }
 
     // Verificar si una materia está disponible
     function estaDisponible(curso) {
-      // Si es Memoria de título, requiere aprobar todo
+      // Caso especial para Memoria de título
       if (curso.requiereTodo) {
-        const totalMaterias = mallaCompleta.reduce((total, sem) => total + sem.cursos.length, 0) - 4;
-        return Object.keys(materiasAprobadas).length === totalMaterias;
+        const totalRequerido = state.totalCursos - 4; // Excluyendo los 4 últimos
+        return Object.keys(state.aprobadas).length >= totalRequerido;
       }
       
       // Verificar requisitos normales
       const requisitos = [];
       mallaCompleta.forEach(sem => {
-        if (sem.cursos) {
-          sem.cursos.forEach(c => {
-            if (c.abre && c.abre.includes(curso.nombre)) {
-              requisitos.push(c.nombre);
-            }
-          });
-        }
+        sem.cursos.forEach(c => {
+          if (c.abre && c.abre.includes(curso.nombre)) {
+            requisitos.push(c.nombre);
+          }
+        });
       });
       
-      return requisitos.length === 0 || requisitos.every(req => materiasAprobadas[req]);
+      return requisitos.length === 0 || requisitos.every(req => state.aprobadas[req]);
     }
 
     // Alternar estado de aprobado
     function toggleAprobado(elemento) {
       const nombre = elemento.dataset.nombre;
       
-      if (materiasAprobadas[nombre]) {
-        delete materiasAprobadas[nombre];
+      if (state.aprobadas[nombre]) {
+        delete state.aprobadas[nombre];
         elemento.classList.remove('aprobado');
       } else {
-        materiasAprobadas[nombre] = true;
+        state.aprobadas[nombre] = true;
         elemento.classList.add('aprobado');
       }
       
       // Guardar en localStorage
-      localStorage.setItem('materiasAprobadas', JSON.stringify(materiasAprobadas));
+      localStorage.setItem('materiasAprobadas', JSON.stringify(state.aprobadas));
       
       // Volver a renderizar para actualizar estados
-      renderizarMalla();
+      renderMalla();
     }
   </script>
 </body>
