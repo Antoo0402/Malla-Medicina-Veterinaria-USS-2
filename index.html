@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Malla Curricular Interactiva</title>
+  <title>Malla Completa - Medicina Veterinaria USS</title>
   <style>
     :root {
       --primary: #6a1b9a;
@@ -12,6 +12,7 @@
       --dark: #4a148c;
       --success: #4caf50;
       --disabled: #e0e0e0;
+      --text-light: #ffffff;
     }
     
     body {
@@ -19,30 +20,81 @@
       background: #f9f4ff;
       margin: 0;
       padding: 20px;
+      color: #333;
     }
     
     header {
       text-align: center;
       margin-bottom: 30px;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     
     h1 {
-      color: var(--dark);
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    
+    .subtitle {
+      margin-top: 5px;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto 20px;
+      padding: 15px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     
     .progress-container {
-      background: #eee;
-      border-radius: 10px;
-      margin: 20px auto;
-      max-width: 800px;
+      flex-grow: 1;
+      margin-left: 20px;
     }
     
     .progress-bar {
       height: 20px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      background: #eee;
       border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
       width: 0%;
       transition: width 0.5s ease;
+    }
+    
+    #progress-text {
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 5px;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    
+    .btn:hover {
+      background: var(--dark);
+      transform: translateY(-2px);
     }
     
     .malla-container {
@@ -50,14 +102,17 @@
       gap: 15px;
       overflow-x: auto;
       padding: 20px 10px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
     
     .semestre {
-      min-width: 250px;
+      min-width: 260px;
       background: white;
       border-radius: 10px;
       padding: 15px;
       box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      flex-shrink: 0;
     }
     
     .semestre h2 {
@@ -66,6 +121,7 @@
       margin-bottom: 15px;
       padding-bottom: 10px;
       border-bottom: 2px solid var(--light);
+      font-size: 1.2rem;
     }
     
     .curso {
@@ -86,8 +142,17 @@
     
     .curso.aprobado {
       background: var(--secondary);
-      color: white;
+      color: var(--text-light);
       border-left-color: var(--dark);
+    }
+    
+    .curso.aprobado::after {
+      content: "✓";
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: bold;
     }
     
     .curso.bloqueado {
@@ -97,32 +162,54 @@
       border-left-color: #ccc;
     }
     
-    .curso .requisitos {
-      font-size: 12px;
-      opacity: 0.8;
-      margin-top: 5px;
-    }
-    
-    .badge {
+    .curso.bloqueado::after {
+      content: "🔒";
       position: absolute;
       right: 10px;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255,255,255,0.2);
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 12px;
+      font-size: 0.9em;
+    }
+    
+    .curso .abre {
+      font-size: 0.8rem;
+      margin-top: 5px;
+      opacity: 0.8;
+      font-style: italic;
+    }
+    
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .progress-container {
+        width: 100%;
+        margin-left: 0;
+      }
+      
+      .semestre {
+        min-width: 220px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Malla Curricular de Medicina Veterinaria</h1>
-    <div class="progress-container">
-      <div class="progress-bar" id="progress-bar"></div>
-    </div>
-    <div id="progress-text">0% completado (0/0 materias)</div>
+    <p class="subtitle">Universidad San Sebastián - Haz clic para marcar materias como aprobadas</p>
   </header>
+  
+  <div class="controls">
+    <button id="reset-btn" class="btn">Reiniciar Progreso</button>
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div id="progress-text">0% completado (0/0 materias)</div>
+    </div>
+  </div>
   
   <main>
     <div class="malla-container" id="malla">
@@ -131,46 +218,143 @@
   </main>
 
   <script>
-    // Datos de la malla curricular
+    // Datos completos de los 10 semestres
     const mallaData = [
+      // Primer Semestre
       {
         semestre: "1er Semestre",
         cursos: [
-          { 
-            nombre: "Biología celular", 
-            abre: ["Bioquímica General", "Anatomía Veterinaria 1"] 
-          },
-          { 
-            nombre: "Química General", 
-            abre: ["Bioquímica General"] 
-          }
+          { nombre: "Biología celular", abre: ["Bioquímica General", "Anatomía Veterinaria 1", "Histología veterinaria", "Genética Ganadera"] },
+          { nombre: "Química General y Orgánico", abre: ["Bioquímica General"] },
+          { nombre: "Fica Médica", abre: ["Métodos de complementarios de diagnóstico"] },
+          { nombre: "Matemáticas", abre: ["Genética Ganadera", "Economía"] },
+          { nombre: "Orientación profesional", abre: ["Bienestar animal"] },
+          { nombre: "Estrategia para el aprendizaje", abre: [] }
         ]
       },
+      // Segundo Semestre
       {
         semestre: "2do Semestre",
         cursos: [
-          { 
-            nombre: "Bioquímica General", 
-            abre: ["Fisiología Animal"] 
-          },
-          { 
-            nombre: "Anatomía Veterinaria 1", 
-            abre: ["Anatomía Veterinaria 2"] 
-          }
+          { nombre: "Bioquímica General", abre: ["Fisiología Animal", "Microbiología General"] },
+          { nombre: "Anatomía Veterinaria 1", abre: ["Anatomía Veterinaria 2"] },
+          { nombre: "Histología Veterinaria", abre: ["Fisiología Animal", "Inmunología Veterinaria"] },
+          { nombre: "Zoología Veterinaria", abre: ["Ecología", "Enfermedades parasitarias"] },
+          { nombre: "Bienestar animal", abre: ["Fisiología Animal", "Inmunología", "Sistema de producción de carne"] },
+          { nombre: "Inglés Instrumental 1", abre: ["Inglés Instrumental 2"] }
+        ]
+      },
+      // Tercer Semestre
+      {
+        semestre: "3er Semestre",
+        cursos: [
+          { nombre: "Antropología", abre: ["Ética"] },
+          { nombre: "Ecología", abre: ["Producción de forraje", "Conservación de la vida silvestre"] },
+          { nombre: "Fisiología Animal", abre: ["Fisiopatología Animal", "Reproducción animal", "Enfermedades infecciosas", "Patología general"] },
+          { nombre: "Anatomía Veterinaria 2", abre: [] },
+          { nombre: "Microbiología General", abre: ["Enfermedades infecciosas"] },
+          { nombre: "Immunología", abre: ["Fisiopatología Animal", "Enfermedades infecciosas"] },
+          { nombre: "Genética Ganadera", abre: ["Sistema de producción de carne", "Sistema de producción de leche"] },
+          { nombre: "Inglés Instrumental 2", abre: [] }
+        ]
+      },
+      // Cuarto Semestre
+      {
+        semestre: "4to Semestre",
+        cursos: [
+          { nombre: "Ética", abre: ["Electivo FILS"] },
+          { nombre: "Producción de forraje", abre: ["Nutrición y alimentación animal", "Economía"] },
+          { nombre: "Fisiopatología animal", abre: ["Farmacología Veterinaria", "Andrología"] },
+          { nombre: "Reproducción animal", abre: ["Andrología", "Sistema de producción de carne", "Sistema de producción de leche", "Sistema de producción de peces"] },
+          { nombre: "Enfermedades parasitarias", abre: ["Farmacología Veterinaria 2"] },
+          { nombre: "Enfermedades infecciosas", abre: ["Farmacología Veterinaria 1", "Epidemiología y salud publica"] },
+          { nombre: "Patología general", abre: ["Patología especial de sistemas"] }
+        ]
+      },
+      // Quinto Semestre
+      {
+        semestre: "5to Semestre",
+        cursos: [
+          { nombre: "Electivo FILS", abre: [] },
+          { nombre: "Nutrición y alimentación animal", abre: ["Sistema de producción de leche", "Sistema de producción de peces"] },
+          { nombre: "Patología especial de sistemas", abre: ["Cirugía General", "Exploración clínica de los animal"] },
+          { nombre: "Farmacología Veterinaria 1", abre: ["Farmacología Veterinaria 2"] },
+          { nombre: "Andrología", abre: ["Ginecología y obstetricia"] },
+          { nombre: "Sistema de producción de carne", abre: ["Tecnología de la carne"] },
+          { nombre: "Economía", abre: ["Contabilidad y administración"] }
+        ]
+      },
+      // Sexto Semestre
+      {
+        semestre: "6to Semestre",
+        cursos: [
+          { nombre: "Cirugía general", abre: ["Cirugía especial"] },
+          { nombre: "Farmacología Veterinaria 2", abre: ["Cirugía especial", "Toxicología Veterinaria"] },
+          { nombre: "Sistema de producción de leche", abre: ["Tecnología de la leche"] },
+          { nombre: "Tecnología de la carne", abre: ["Tecnología de la leche"] },
+          { nombre: "Ginecología y obstetricia", abre: ["Exploración clínica de los animales"] },
+          { nombre: "Contabilidad y administración", abre: ["Análisis estadísticos", "Formulación y evaluación de proyectos"] }
+        ]
+      },
+      // Séptimo Semestre
+      {
+        semestre: "7mo Semestre",
+        cursos: [
+          { nombre: "Cirugía especial", abre: ["Medicina interna"] },
+          { nombre: "Exploración clínica", abre: ["Métodos complementarios de diagnóstico", "Medicina interna"] },
+          { nombre: "Análisis estadístico", abre: ["Metodología de la investigación científica", "Epidemiología y salud publica"] },
+          { nombre: "Sistema de peces", abre: [] },
+          { nombre: "Tecnología de la leche", abre: ["Inocuidad de los alimentos"] },
+          { nombre: "Conservación de la vida silvestre", abre: ["Clínica de animales silvestres y exóticos"] }
+        ]
+      },
+      // Octavo Semestre
+      {
+        semestre: "8vo Semestre",
+        cursos: [
+          { nombre: "Toxicología Veterinaria", abre: ["Clínica de animales silvestres y exóticos", "Clínica de equinos y rumiantes", "Clínica de animales de compañía", "Inocuidad de los alimentos"] },
+          { nombre: "Métodos complementarios de diagnóstico", abre: ["Clínica de animales silvestres y exóticos", "Clínica de equinos y rumiantes", "Clínica de animales de compañía"] },
+          { nombre: "Medicina Interna", abre: ["Clínica de animales silvestres y exóticos", "Clínica de equinos y rumiantes", "Clínica de animales de compañía"] },
+          { nombre: "Metodología de la investigación", abre: ["Memoria de título"] },
+          { nombre: "Epidemiología y salud publica", abre: ["Legislación y deontología", "Inocuidad de los alimentos"] },
+          { nombre: "Formulación y evaluación de proyectos", abre: ["Memoria de título"] }
+        ]
+      },
+      // Noveno Semestre
+      {
+        semestre: "9no Semestre",
+        cursos: [
+          { nombre: "Clínica de animales silvestres y exóticos", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] },
+          { nombre: "Clínica de equinos y rumiantes", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] },
+          { nombre: "Clínica de animales de compañía", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] },
+          { nombre: "Legislación y deontología", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] },
+          { nombre: "Memoria de título", abre: [], requiereTodo: true },
+          { nombre: "Inocuidad de los alimentos", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] }
+        ]
+      },
+      // Décimo Semestre
+      {
+        semestre: "10mo Semestre",
+        cursos: [
+          { nombre: "Electivo 1", abre: [] },
+          { nombre: "Electivo 2", abre: [] },
+          { nombre: "Electivo 3", abre: [] },
+          { nombre: "Internado", abre: [] }
         ]
       }
-      // Agregar más semestres según sea necesario
     ];
 
     // Estado de la aplicación
     const state = {
       aprobadas: JSON.parse(localStorage.getItem('materiasAprobadas')) || {},
-      totalMaterias: 0
+      totalMaterias: 0,
+      cursoElements: {}
     };
 
     // Inicializar la aplicación
     document.addEventListener('DOMContentLoaded', function() {
       renderMalla();
+      setupEventListeners();
       updateProgress();
     });
 
@@ -178,6 +362,7 @@
     function renderMalla() {
       const container = document.getElementById('malla');
       container.innerHTML = '';
+      state.cursoElements = {};
       
       // Contar materias totales
       state.totalMaterias = mallaData.reduce((total, semestre) => total + semestre.cursos.length, 0);
@@ -198,29 +383,17 @@
           
           // Mostrar qué materias abre
           if (curso.abre && curso.abre.length > 0) {
-            const requisitos = document.createElement('div');
-            requisitos.className = 'requisitos';
-            requisitos.textContent = `Abre: ${curso.abre.join(', ')}`;
-            cursoElement.appendChild(requisitos);
+            const abreElement = document.createElement('div');
+            abreElement.className = 'abre';
+            abreElement.textContent = `Abre: ${curso.abre.join(', ')}`;
+            cursoElement.appendChild(abreElement);
           }
           
           // Verificar estado
-          if (state.aprobadas[curso.nombre]) {
-            cursoElement.classList.add('aprobado');
-          } else if (!isDisponible(curso.nombre)) {
-            cursoElement.classList.add('bloqueado');
-            const badge = document.createElement('span');
-            badge.className = 'badge';
-            badge.textContent = 'Bloqueado';
-            cursoElement.appendChild(badge);
-          }
+          updateCursoState(curso, cursoElement);
           
-          // Evento de clic
-          cursoElement.addEventListener('click', function() {
-            if (!this.classList.contains('bloqueado')) {
-              toggleAprobado(this);
-            }
-          });
+          // Guardar referencia al elemento
+          state.cursoElements[curso.nombre] = cursoElement;
           
           semestreElement.appendChild(cursoElement);
         });
@@ -229,10 +402,41 @@
       });
     }
 
-    // Verificar si una materia está disponible
-    function isDisponible(nombreMateria) {
-      // Obtener requisitos para esta materia
+    // Actualizar estado de un curso
+    function updateCursoState(curso, elemento) {
+      // Reiniciar clases
+      elemento.className = 'curso';
+      
+      // Verificar si está aprobado
+      if (state.aprobadas[curso.nombre]) {
+        elemento.classList.add('aprobado');
+        return;
+      }
+      
+      // Verificar requisitos especiales (como Memoria de título)
+      if (curso.requiereTodo) {
+        const todasAprobadas = checkTodasMateriasAprobadas();
+        if (!todasAprobadas) {
+          elemento.classList.add('bloqueado');
+          return;
+        }
+      }
+      
+      // Verificar requisitos normales
+      const requisitos = getRequisitos(curso.nombre);
+      if (requisitos.length > 0) {
+        const requisitosCumplidos = requisitos.every(req => state.aprobadas[req]);
+        if (!requisitosCumplidos) {
+          elemento.classList.add('bloqueado');
+          return;
+        }
+      }
+    }
+
+    // Obtener requisitos para una materia
+    function getRequisitos(nombreMateria) {
       const requisitos = [];
+      
       mallaData.forEach(semestre => {
         semestre.cursos.forEach(curso => {
           if (curso.abre && curso.abre.includes(nombreMateria)) {
@@ -241,31 +445,61 @@
         });
       });
       
-      // Si no tiene requisitos, está disponible
-      if (requisitos.length === 0) return true;
-      
-      // Verificar si todos los requisitos están aprobados
-      return requisitos.every(req => state.aprobadas[req]);
+      return requisitos;
     }
 
-    // Alternar estado de aprobado
-    function toggleAprobado(elemento) {
+    // Verificar si todas las materias están aprobadas (para Memoria de título)
+    function checkTodasMateriasAprobadas() {
+      // Contar todas las materias excepto las del último semestre
+      let total = 0;
+      let aprobadas = 0;
+      
+      for (let i = 0; i < mallaData.length - 1; i++) {
+        const semestre = mallaData[i];
+        total += semestre.cursos.length;
+        
+        semestre.cursos.forEach(curso => {
+          if (state.aprobadas[curso.nombre]) {
+            aprobadas++;
+          }
+        });
+      }
+      
+      return aprobadas === total;
+    }
+
+    // Manejar clic en un curso
+    function handleCursoClick(event) {
+      const elemento = event.currentTarget;
       const nombre = elemento.dataset.nombre;
       
+      if (elemento.classList.contains('bloqueado')) return;
+      
+      // Alternar estado
       if (state.aprobadas[nombre]) {
         delete state.aprobadas[nombre];
-        elemento.classList.remove('aprobado');
       } else {
         state.aprobadas[nombre] = true;
-        elemento.classList.add('aprobado');
       }
       
       // Guardar en localStorage
       localStorage.setItem('materiasAprobadas', JSON.stringify(state.aprobadas));
       
-      // Volver a renderizar para actualizar estados
-      renderMalla();
+      // Actualizar toda la malla
+      updateAllCursosState();
       updateProgress();
+    }
+
+    // Actualizar estado de todos los cursos
+    function updateAllCursosState() {
+      mallaData.forEach(semestre => {
+        semestre.cursos.forEach(curso => {
+          const elemento = state.cursoElements[curso.nombre];
+          if (elemento) {
+            updateCursoState(curso, elemento);
+          }
+        });
+      });
     }
 
     // Actualizar barra de progreso
@@ -273,9 +507,29 @@
       const aprobadas = Object.keys(state.aprobadas).length;
       const porcentaje = Math.round((aprobadas / state.totalMaterias) * 100);
       
-      document.getElementById('progress-bar').style.width = `${porcentaje}%`;
+      document.getElementById('progress-fill').style.width = `${porcentaje}%`;
       document.getElementById('progress-text').textContent = 
         `${porcentaje}% completado (${aprobadas}/${state.totalMaterias} materias)`;
+    }
+
+    // Configurar event listeners
+    function setupEventListeners() {
+      // Clic en cursos
+      document.getElementById('malla').addEventListener('click', function(event) {
+        if (event.target.classList.contains('curso')) {
+          handleCursoClick(event);
+        }
+      });
+      
+      // Botón de reinicio
+      document.getElementById('reset-btn').addEventListener('click', function() {
+        if (confirm('¿Estás seguro de querer reiniciar todo el progreso?')) {
+          state.aprobadas = {};
+          localStorage.removeItem('materiasAprobadas');
+          updateAllCursosState();
+          updateProgress();
+        }
+      });
     }
   </script>
 </body>
