@@ -136,7 +136,7 @@
   <script>
     // Datos COMPLETOS de los 10 semestres
     const mallaCompleta = [
-      // 1er Semestre (todos disponibles inicialmente)
+      // 1er Semestre
       {
         semestre: "1er Semestre",
         cursos: [
@@ -268,48 +268,25 @@
 
     // Inicialización
     document.addEventListener('DOMContentLoaded', function() {
+      console.log("Iniciando aplicación...");
+      console.log("Total de semestres:", mallaCompleta.length);
+      console.log("Total de cursos:", state.totalCursos);
       renderMalla();
     });
-
-    // Función PRINCIPAL - BLOQUEO ESTRICTO IMPLEMENTADO
-    function estaDisponible(curso, cursosAprobados) {
-      // 1. Si ya está aprobado, está disponible
-      if (cursosAprobados.has(curso.nombre)) return true;
-      
-      // 2. Cursos del primer semestre siempre disponibles
-      const esPrimerSemestre = mallaCompleta[0].cursos.some(c => c.nombre === curso.nombre);
-      if (esPrimerSemestre) return true;
-      
-      // 3. Caso especial para Memoria de título (requiere casi todo aprobado)
-      if (curso.requiereTodo) {
-        return cursosAprobados.size >= (state.totalCursos - 4);
-      }
-      
-      // 4. Buscar TODOS los cursos que son requisitos para este curso
-      const cursosRequisitos = [];
-      mallaCompleta.forEach(semestre => {
-        semestre.cursos.forEach(c => {
-          if (c.abre && c.abre.includes(curso.nombre)) {
-            cursosRequisitos.push(c.nombre);
-          }
-        });
-      });
-      
-      // 5. Si no tiene requisitos, está disponible
-      if (cursosRequisitos.length === 0) return true;
-      
-      // 6. VERIFICACIÓN ESTRICTA: Todos los requisitos deben estar aprobados
-      return cursosRequisitos.every(req => cursosAprobados.has(req));
-    }
 
     // Renderizar toda la malla
     function renderMalla() {
       const container = document.getElementById('malla');
-      if (!container) return;
+      
+      // Verificación básica
+      if (!container) {
+        console.error("No se encontró el elemento con ID 'malla'");
+        return;
+      }
       
       container.innerHTML = '';
-      const cursosAprobados = new Set(Object.keys(state.aprobadas));
       
+      // Renderizar cada semestre
       mallaCompleta.forEach(semestre => {
         const semestreElement = document.createElement('div');
         semestreElement.className = 'semestre';
@@ -318,6 +295,7 @@
         titulo.textContent = semestre.semestre;
         semestreElement.appendChild(titulo);
         
+        // Renderizar cada curso
         semestre.cursos.forEach(curso => {
           const cursoElement = document.createElement('div');
           cursoElement.className = 'curso';
@@ -332,14 +310,14 @@
             cursoElement.appendChild(abreElement);
           }
           
-          // Verificar estado (APROBADO o BLOQUEADO)
+          // Verificar estado
           if (state.aprobadas[curso.nombre]) {
             cursoElement.classList.add('aprobado');
-          } else if (!estaDisponible(curso, cursosAprobados)) {
+          } else if (!estaDisponible(curso)) {
             cursoElement.classList.add('bloqueado');
           }
           
-          // Evento de clic (solo para cursos no bloqueados)
+          // Evento de clic
           cursoElement.addEventListener('click', function() {
             if (!this.classList.contains('bloqueado')) {
               toggleAprobado(this);
@@ -351,14 +329,48 @@
         
         container.appendChild(semestreElement);
       });
+      
+      console.log("Malla renderizada correctamente");
+    }
+
+    // Verificar si una materia está disponible
+    function estaDisponible(curso) {
+      // Caso especial para Memoria de título
+      if (curso.requiereTodo) {
+        const totalRequerido = state.totalCursos - 4; // Excluyendo los 4 últimos
+        return Object.keys(state.aprobadas).length >= totalRequerido;
+      }
+      
+      // Verificar requisitos normales
+      const requisitos = [];
+      mallaCompleta.forEach(sem => {
+        sem.cursos.forEach(c => {
+          if (c.abre && c.abre.includes(curso.nombre)) {
+            requisitos.push(c.nombre);
+          }
+        });
+      });
+      
+      return requisitos.length === 0 || requisitos.every(req => state.aprobadas[req]);
     }
 
     // Alternar estado de aprobado
     function toggleAprobado(elemento) {
       const nombre = elemento.dataset.nombre;
-      state.aprobadas[nombre] = !state.aprobadas[nombre];
+      
+      if (state.aprobadas[nombre]) {
+        delete state.aprobadas[nombre];
+        elemento.classList.remove('aprobado');
+      } else {
+        state.aprobadas[nombre] = true;
+        elemento.classList.add('aprobado');
+      }
+      
+      // Guardar en localStorage
       localStorage.setItem('materiasAprobadas', JSON.stringify(state.aprobadas));
-      renderMalla(); // Vuelve a renderizar para actualizar los estados
+      
+      // Volver a renderizar para actualizar estados
+      renderMalla();
     }
   </script>
 </body>
