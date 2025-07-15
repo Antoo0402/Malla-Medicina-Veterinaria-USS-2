@@ -142,7 +142,7 @@
         cursos: [
           { nombre: "Biología celular", abre: ["Bioquímica General", "Anatomía Veterinaria 1", "Histología veterinaria", "Genética Ganadera"] },
           { nombre: "Química General y Orgánico", abre: ["Bioquímica General"] },
-          { nombre: "Fisica Médica", abre: ["Métodos de complementarios de diagnóstico"] },
+          { nombre: "Fica Médica", abre: ["Métodos de complementarios de diagnóstico"] },
           { nombre: "Matemáticas", abre: ["Genética Ganadera", "Economía"] },
           { nombre: "Orientación profesional", abre: ["Bienestar animal"] },
           { nombre: "Estrategia para el aprendizaje", abre: [] }
@@ -278,13 +278,15 @@
     function renderMalla() {
       const container = document.getElementById('malla');
       
-      // Verificación básica
       if (!container) {
         console.error("No se encontró el elemento con ID 'malla'");
         return;
       }
       
       container.innerHTML = '';
+      
+      // Primero recolectamos todos los cursos aprobados
+      const cursosAprobados = new Set(Object.keys(state.aprobadas));
       
       // Renderizar cada semestre
       mallaCompleta.forEach(semestre => {
@@ -313,7 +315,7 @@
           // Verificar estado
           if (state.aprobadas[curso.nombre]) {
             cursoElement.classList.add('aprobado');
-          } else if (!estaDisponible(curso)) {
+          } else if (!estaDisponible(curso, cursosAprobados)) {
             cursoElement.classList.add('bloqueado');
           }
           
@@ -333,12 +335,18 @@
       console.log("Malla renderizada correctamente");
     }
 
-    // Verificar si una materia está disponible
-    function estaDisponible(curso) {
+    // Verificar si una materia está disponible (modificada)
+    function estaDisponible(curso, cursosAprobados) {
       // Caso especial para Memoria de título
       if (curso.requiereTodo) {
         const totalRequerido = state.totalCursos - 4; // Excluyendo los 4 últimos
-        return Object.keys(state.aprobadas).length >= totalRequerido;
+        return cursosAprobados.size >= totalRequerido;
+      }
+      
+      // Verificar si es un curso del primer semestre (siempre disponibles)
+      const esPrimerSemestre = mallaCompleta[0].cursos.some(c => c.nombre === curso.nombre);
+      if (esPrimerSemestre) {
+        return true;
       }
       
       // Verificar requisitos normales
@@ -351,7 +359,13 @@
         });
       });
       
-      return requisitos.length === 0 || requisitos.every(req => state.aprobadas[req]);
+      // Si no tiene requisitos, está disponible
+      if (requisitos.length === 0) {
+        return true;
+      }
+      
+      // Verificar que TODOS los requisitos estén aprobados
+      return requisitos.every(req => cursosAprobados.has(req));
     }
 
     // Alternar estado de aprobado
