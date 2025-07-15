@@ -278,15 +278,13 @@
     function renderMalla() {
       const container = document.getElementById('malla');
       
+      // Verificación básica
       if (!container) {
         console.error("No se encontró el elemento con ID 'malla'");
         return;
       }
       
       container.innerHTML = '';
-      
-      // Primero recolectamos todos los cursos aprobados
-      const cursosAprobados = new Set(Object.keys(state.aprobadas));
       
       // Renderizar cada semestre
       mallaCompleta.forEach(semestre => {
@@ -315,7 +313,7 @@
           // Verificar estado
           if (state.aprobadas[curso.nombre]) {
             cursoElement.classList.add('aprobado');
-          } else if (!estaDisponible(curso, cursosAprobados)) {
+          } else if (!estaDisponible(curso)) {
             cursoElement.classList.add('bloqueado');
           }
           
@@ -335,18 +333,12 @@
       console.log("Malla renderizada correctamente");
     }
 
-    // Verificar si una materia está disponible (modificada)
-    function estaDisponible(curso, cursosAprobados) {
+    // Verificar si una materia está disponible
+    function estaDisponible(curso) {
       // Caso especial para Memoria de título
       if (curso.requiereTodo) {
         const totalRequerido = state.totalCursos - 4; // Excluyendo los 4 últimos
-        return cursosAprobados.size >= totalRequerido;
-      }
-      
-      // Verificar si es un curso del primer semestre (siempre disponibles)
-      const esPrimerSemestre = mallaCompleta[0].cursos.some(c => c.nombre === curso.nombre);
-      if (esPrimerSemestre) {
-        return true;
+        return Object.keys(state.aprobadas).length >= totalRequerido;
       }
       
       // Verificar requisitos normales
@@ -359,13 +351,7 @@
         });
       });
       
-      // Si no tiene requisitos, está disponible
-      if (requisitos.length === 0) {
-        return true;
-      }
-      
-      // Verificar que TODOS los requisitos estén aprobados
-      return requisitos.every(req => cursosAprobados.has(req));
+      return requisitos.length === 0 || requisitos.every(req => state.aprobadas[req]);
     }
 
     // Alternar estado de aprobado
