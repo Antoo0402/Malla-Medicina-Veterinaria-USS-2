@@ -6,14 +6,14 @@
   <title>Malla Completa Veterinaria USS</title>
   <style>
     :root {
-      --primary: #D8BFD8;
-      --secondary: #E6E6FA;
-      --light: #F5F5FF;
-      --dark: #9370DB;
-      --disabled: #E0E0E0;
-      --text: #4B0082;
-      --hover: #C9A0DC;
-      --background: #FFF5FF;
+      --primary: #D8BFD8;    /* Lila pastel */
+      --secondary: #E6E6FA;  /* Lavanda */
+      --light: #F5F5FF;      /* Blanco azulado */
+      --dark: #9370DB;       /* Púrpura medio pastel */
+      --disabled: #E0E0E0;   /* Gris claro */
+      --text: #4B0082;       /* Índigo para texto */
+      --hover: #C9A0DC;      /* Wisteria pastel */
+      --background: #FFF5FF; /* Fondo rosa blanco */
     }
     
     body {
@@ -111,6 +111,7 @@
       font-style: italic;
     }
     
+    /* Barra de scroll */
     .malla-container::-webkit-scrollbar {
       height: 8px;
     }
@@ -124,32 +125,30 @@
       background: var(--primary);
       border-radius: 10px;
     }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
   </style>
 </head>
 <body>
   <h1>Malla Curricular de Medicina Veterinaria USS</h1>
-  <div class="malla-container" id="malla"></div>
+  <div class="malla-container" id="malla">
+    <!-- Los semestres se cargarán aquí -->
+  </div>
 
   <script>
     // Datos COMPLETOS de los 10 semestres
     const mallaCompleta = [
+      // 1er Semestre
       {
         semestre: "1er Semestre",
         cursos: [
           { nombre: "Biología celular", abre: ["Bioquímica General", "Anatomía Veterinaria 1", "Histología veterinaria", "Genética Ganadera"] },
           { nombre: "Química General y Orgánico", abre: ["Bioquímica General"] },
-          { nombre: "Fica Médica", abre: ["Métodos de complementarios de diagnóstico"] },
+          { nombre: "Fisica Médica", abre: ["Métodos de complementarios de diagnóstico"] },
           { nombre: "Matemáticas", abre: ["Genética Ganadera", "Economía"] },
           { nombre: "Orientación profesional", abre: ["Bienestar animal"] },
           { nombre: "Estrategia para el aprendizaje", abre: [] }
         ]
       },
+      // 2do Semestre
       {
         semestre: "2do Semestre",
         cursos: [
@@ -161,6 +160,7 @@
           { nombre: "Inglés Instrumental 1", abre: ["Inglés Instrumental 2"] }
         ]
       },
+      // 3er Semestre
       {
         semestre: "3er Semestre",
         cursos: [
@@ -169,11 +169,12 @@
           { nombre: "Fisiología Animal", abre: ["Fisiopatología Animal", "Reproducción animal", "Enfermedades infecciosas", "Patología general"] },
           { nombre: "Anatomía Veterinaria 2", abre: [] },
           { nombre: "Microbiología General", abre: ["Enfermedades infecciosas"] },
-          { nombre: "Inmunología", abre: ["Fisiopatología Animal", "Enfermedades infecciosas"] },
+          { nombre: "Immunología", abre: ["Fisiopatología Animal", "Enfermedades infecciosas"] },
           { nombre: "Genética Ganadera", abre: ["Sistema de producción de carne", "Sistema de producción de leche"] },
           { nombre: "Inglés Instrumental 2", abre: [] }
         ]
       },
+      // 4to Semestre
       {
         semestre: "4to Semestre",
         cursos: [
@@ -186,6 +187,7 @@
           { nombre: "Patología general", abre: ["Patología especial de sistemas"] }
         ]
       },
+      // 5to Semestre
       {
         semestre: "5to Semestre",
         cursos: [
@@ -198,6 +200,7 @@
           { nombre: "Economía", abre: ["Contabilidad y administración"] }
         ]
       },
+      // 6to Semestre
       {
         semestre: "6to Semestre",
         cursos: [
@@ -209,6 +212,7 @@
           { nombre: "Contabilidad y administración", abre: ["Análisis estadísticos", "Formulación y evaluación de proyectos"] }
         ]
       },
+      // 7mo Semestre
       {
         semestre: "7mo Semestre",
         cursos: [
@@ -220,6 +224,7 @@
           { nombre: "Conservación de la vida silvestre", abre: ["Clínica de animales silvestres y exóticos"] }
         ]
       },
+      // 8vo Semestre
       {
         semestre: "8vo Semestre",
         cursos: [
@@ -231,6 +236,7 @@
           { nombre: "Formulación y evaluación de proyectos", abre: ["Memoria de título"] }
         ]
       },
+      // 9no Semestre
       {
         semestre: "9no Semestre",
         cursos: [
@@ -242,6 +248,7 @@
           { nombre: "Inocuidad de los alimentos", abre: ["Electivo 1", "Electivo 2", "Electivo 3", "Internado"] }
         ]
       },
+      // 10mo Semestre
       {
         semestre: "10mo Semestre",
         cursos: [
@@ -253,14 +260,6 @@
       }
     ];
 
-    // Requisitos especiales adicionales
-    const requisitosEspeciales = {
-      "Inmunología": ["Histología Veterinaria", "Bienestar animal"],
-      "Fisiología Animal": ["Bioquímica General"],
-      "Microbiología General": ["Bioquímica General"],
-      "Memoria de título": []
-    };
-
     // Estado de la aplicación
     const state = {
       aprobadas: JSON.parse(localStorage.getItem('materiasAprobadas')) || {},
@@ -269,47 +268,28 @@
 
     // Inicialización
     document.addEventListener('DOMContentLoaded', function() {
+      console.log("Iniciando aplicación...");
+      console.log("Total de semestres:", mallaCompleta.length);
+      console.log("Total de cursos:", state.totalCursos);
       renderMalla();
     });
-
-    // Función para verificar disponibilidad
-    function estaDisponible(curso, semestreIndex) {
-      // 1. Todos los cursos del primer semestre siempre están disponibles
-      if (semestreIndex === 0) return true;
-      
-      // 2. Si el curso ya está aprobado, está disponible
-      if (state.aprobadas[curso.nombre]) return true;
-      
-      // 3. Caso especial para Memoria de título (requiere casi todo aprobado)
-      if (curso.requiereTodo) {
-        return Object.keys(state.aprobadas).length >= (state.totalCursos - 4);
-      }
-      
-      // 4. Verificar requisitos especiales si existen
-      if (requisitosEspeciales[curso.nombre]) {
-        const cumpleRequisitosEspeciales = requisitosEspeciales[curso.nombre].every(
-          req => state.aprobadas[req]
-        );
-        if (!cumpleRequisitosEspeciales) return false;
-      }
-      
-      // 5. Verificar requisitos normales (propiedad 'abre')
-      if (curso.abre && curso.abre.length > 0) {
-        return curso.abre.every(ramo => state.aprobadas[ramo]);
-      }
-      
-      // 6. Si no tiene requisitos, está disponible
-      return true;
-    }
 
     // Renderizar toda la malla
     function renderMalla() {
       const container = document.getElementById('malla');
-      if (!container) return;
+      
+      if (!container) {
+        console.error("No se encontró el elemento con ID 'malla'");
+        return;
+      }
       
       container.innerHTML = '';
       
-      mallaCompleta.forEach((semestre, semestreIndex) => {
+      // Primero recolectamos todos los cursos aprobados
+      const cursosAprobados = new Set(Object.keys(state.aprobadas));
+      
+      // Renderizar cada semestre
+      mallaCompleta.forEach(semestre => {
         const semestreElement = document.createElement('div');
         semestreElement.className = 'semestre';
         
@@ -317,12 +297,14 @@
         titulo.textContent = semestre.semestre;
         semestreElement.appendChild(titulo);
         
+        // Renderizar cada curso
         semestre.cursos.forEach(curso => {
           const cursoElement = document.createElement('div');
           cursoElement.className = 'curso';
           cursoElement.textContent = curso.nombre;
           cursoElement.dataset.nombre = curso.nombre;
           
+          // Mostrar qué materias abre
           if (curso.abre && curso.abre.length > 0) {
             const abreElement = document.createElement('div');
             abreElement.className = 'abre';
@@ -330,14 +312,18 @@
             cursoElement.appendChild(abreElement);
           }
           
+          // Verificar estado
           if (state.aprobadas[curso.nombre]) {
             cursoElement.classList.add('aprobado');
-          } else if (!estaDisponible(curso, semestreIndex)) {
+          } else if (!estaDisponible(curso, cursosAprobados)) {
             cursoElement.classList.add('bloqueado');
           }
           
+          // Evento de clic
           cursoElement.addEventListener('click', function() {
-            toggleAprobado(this);
+            if (!this.classList.contains('bloqueado')) {
+              toggleAprobado(this);
+            }
           });
           
           semestreElement.appendChild(cursoElement);
@@ -345,90 +331,60 @@
         
         container.appendChild(semestreElement);
       });
+      
+      console.log("Malla renderizada correctamente");
     }
 
-    // Función para actualizar el estado de un curso específico
-    function actualizarEstadoCurso(nombreCurso) {
-      const elementos = document.querySelectorAll(`.curso[data-nombre="${nombreCurso}"]`);
-      if (!elementos || elementos.length === 0) return;
+    // Verificar si una materia está disponible (modificada)
+    function estaDisponible(curso, cursosAprobados) {
+      // Caso especial para Memoria de título
+      if (curso.requiereTodo) {
+        const totalRequerido = state.totalCursos - 4; // Excluyendo los 4 últimos
+        return cursosAprobados.size >= totalRequerido;
+      }
       
-      // Encontrar el curso en la malla
-      let curso = null;
-      let semestreIndex = -1;
+      // Verificar si es un curso del primer semestre (siempre disponibles)
+      const esPrimerSemestre = mallaCompleta[0].cursos.some(c => c.nombre === curso.nombre);
+      if (esPrimerSemestre) {
+        return true;
+      }
       
-      mallaCompleta.forEach((sem, index) => {
+      // Verificar requisitos normales
+      const requisitos = [];
+      mallaCompleta.forEach(sem => {
         sem.cursos.forEach(c => {
-          if (c.nombre === nombreCurso) {
-            curso = c;
-            semestreIndex = index;
+          if (c.abre && c.abre.includes(curso.nombre)) {
+            requisitos.push(c.nombre);
           }
         });
       });
       
-      if (!curso) return;
+      // Si no tiene requisitos, está disponible
+      if (requisitos.length === 0) {
+        return true;
+      }
       
-      // Actualizar todos los elementos con el mismo nombre
-      elementos.forEach(elemento => {
-        elemento.classList.remove('aprobado', 'bloqueado');
-        
-        if (state.aprobadas[nombreCurso]) {
-          elemento.classList.add('aprobado');
-        } else if (!estaDisponible(curso, semestreIndex)) {
-          elemento.classList.add('bloqueado');
-        }
-      });
+      // Verificar que TODOS los requisitos estén aprobados
+      return requisitos.every(req => cursosAprobados.has(req));
     }
 
-    // Función mejorada para alternar estado de aprobado
+    // Alternar estado de aprobado
     function toggleAprobado(elemento) {
       const nombre = elemento.dataset.nombre;
       
-      // Si el curso está bloqueado, no hacer nada
-      if (elemento.classList.contains('bloqueado')) return;
+      if (state.aprobadas[nombre]) {
+        delete state.aprobadas[nombre];
+        elemento.classList.remove('aprobado');
+      } else {
+        state.aprobadas[nombre] = true;
+        elemento.classList.add('aprobado');
+      }
       
-      // Alternar estado
-      state.aprobadas[nombre] = !state.aprobadas[nombre];
+      // Guardar en localStorage
       localStorage.setItem('materiasAprobadas', JSON.stringify(state.aprobadas));
       
-      // Animación de cambio de estado
-      elemento.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        elemento.style.transform = '';
-        elemento.classList.toggle('aprobado', state.aprobadas[nombre]);
-      }, 150);
-      
-      // Buscar todos los ramos que podrían desbloquearse con este cambio
-      const ramosADesbloquear = new Set();
-      
-      // Verificar en toda la malla qué ramos dependen del que acabamos de cambiar
-      mallaCompleta.forEach(semestre => {
-        semestre.cursos.forEach(curso => {
-          // Verificar si este curso tiene como requisito el ramo que acabamos de cambiar
-          const tieneRequisitoDirecto = curso.abre && curso.abre.includes(nombre);
-          const tieneRequisitoEspecial = requisitosEspeciales[curso.nombre] && 
-                                        requisitosEspeciales[curso.nombre].includes(nombre);
-          
-          if (tieneRequisitoDirecto || tieneRequisitoEspecial) {
-            ramosADesbloquear.add(curso.nombre);
-          }
-        });
-      });
-      
-      // Actualizar visualmente los ramos afectados
-      ramosADesbloquear.forEach(ramo => {
-        setTimeout(() => {
-          actualizarEstadoCurso(ramo);
-          
-          // Efecto visual para ramos recién desbloqueados
-          const elementos = document.querySelectorAll(`.curso[data-nombre="${ramo}"]`);
-          elementos.forEach(el => {
-            if (!el.classList.contains('bloqueado') && !el.classList.contains('aprobado')) {
-              el.style.animation = 'pulse 0.5s';
-              setTimeout(() => el.style.animation = '', 500);
-            }
-          });
-        }, 200);
-      });
+      // Volver a renderizar para actualizar estados
+      renderMalla();
     }
   </script>
 </body>
